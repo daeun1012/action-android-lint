@@ -28,7 +28,7 @@ inputs:
     required: false
     default: ''
 
-  fail-level:
+  fail_level:
     description: 'fail level'
     required: false
     default: ''

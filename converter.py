@@ -26,9 +26,9 @@ class StrEnum(str, Enum):
         return self.name
 
 class SeverityLevel(StrEnum):
-    INFO = auto()
-    WARNING = auto()
-    ERROR = auto()
+    INFO = 1
+    WARNING = 2
+    ERROR = 3
 
 
 for issue in ET.parse(sys.argv[1]).getroot().iter('issue'):
