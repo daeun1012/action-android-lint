@@ -35,7 +35,6 @@ runs:
     - ${{ inputs.github_token }}
     - ${{ inputs.lint_xml_file }}
     - ${{ inputs.level }}
-    - ${{ inputs.reporter }}
     - ${{ inputs.reviewdog_flags }}
 
 branding:
