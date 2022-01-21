@@ -28,6 +28,11 @@ inputs:
     required: false
     default: ''
 
+  fail-level:
+    description: 'fail level'
+    required: false
+    default: ''
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -37,6 +42,7 @@ runs:
     - ${{ inputs.level }}
     - ${{ inputs.reporter }}
     - ${{ inputs.reviewdog_flags }}
+    - ${{ inputs.fail_level }}
 
 branding:
   icon: 'smartphone'

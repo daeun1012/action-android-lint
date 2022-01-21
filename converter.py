@@ -1,6 +1,7 @@
 import os
 import sys
 import xml.etree.ElementTree as ET
+from enum import Enum
 
 if len(sys.argv) == 1:
     raise NameError('No lint file specified')
@@ -13,6 +14,22 @@ REPO_NAME = os.environ['GITHUB_REPOSITORY'].split('/')[1]
 
 checkstyle = ET.Element('checkstyle')
 checkstyle.attrib['version'] = '8.0'
+
+class StrEnum(str, Enum):
+    def _generate_next_value_(name, start, count, last_values):
+        return name
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+class SeverityLevel(StrEnum):
+    INFO = auto()
+    WARNING = auto()
+    ERROR = auto()
+
 
 for issue in ET.parse(sys.argv[1]).getroot().iter('issue'):
     file = ET.SubElement(checkstyle, 'file')
@@ -35,7 +52,17 @@ for issue in ET.parse(sys.argv[1]).getroot().iter('issue'):
         error.attrib['column'] = str(0)
 
     if 'severity' in issue.attrib:
-        error.attrib['severity'] = issue.attrib['severity']
+        input_error_level = sys.argv[2].upper()
+
+        if sys.argv[2] == '' or input_error_level == SeverityLevel.ERROR:
+            error.attrib['severity'] = issue.attrib['severity']
+        else:
+            issue_error_level = issue.attrib['severity'].upper()
+
+            if SeverityLevel.WARNING == input_error_level and (issue_error_level == SeverityLevel.WARNING or issue_error_level == SeverityLevel.ERROR):
+                error.attrib['severity'] = 'error'
+            else:
+                error.attrib['severity'] = 'error'
     else:
         error.attrib['severity'] = 'info' 
 
