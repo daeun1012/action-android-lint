@@ -24,6 +24,9 @@ for issue in ET.parse(sys.argv[1]).getroot().iter('issue'):
 
     error = ET.SubElement(file, 'error')
 
+    if error.attrib['severity'] != 'error':
+        continue
+
     if 'line' in issue[0].attrib:
         error.attrib['line'] = issue[0].attrib['line']
     else:
@@ -38,9 +41,6 @@ for issue in ET.parse(sys.argv[1]).getroot().iter('issue'):
         error.attrib['severity'] = issue.attrib['severity']
     else:
         error.attrib['severity'] = 'info'
-
-    if error.attrib['severity'] != 'error':
-        continue
 
     issueId = issue.attrib['id']
     message = issue.attrib['message']
